@@ -2,8 +2,9 @@ from flask import Flask, request, jsonify
 import requests
 
 app = Flask(__name__)
-API_KEY = 'IBfGoXLBVKXsM10L0SSA'
 
+# This is a test API KEY with limited usage.
+API_KEY = 'IBfGoXLBVKXsM10L0SSA'
 
 @app.route('/auth')
 def auth_test():
