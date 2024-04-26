@@ -36,7 +36,19 @@ def estimate_electricity():
 @app.route('/estimate/flight', methods=['POST'])
 def estimate_flight():
     data = request.json
-    return jsonify({"message": "Flight estimate route not implemented yet"})
+    response = requests.post(
+        "https://www.carboninterface.com/api/v1/estimates",
+        headers = {
+            'Authorization': f'Bearer {API_KEY}',
+            'Content-Type': 'application/json',
+        },
+        json={
+            "type": "flight",
+            "passengers": data.get("passengers"),
+            "legs": data.get("legs"),
+        }
+    )
+    return jsonify(response.json())
 
 if __name__ == '__main__':
     app.run(debug=True)
