@@ -1,0 +1,9 @@
+python3 -m venv venv
+source venv/bin/activate
+
+https://docs.carboninterface.com/#/?id=postman
+
+export FLASK_APP=test.py
+export FLASK_ENV=development
+flask run
+
