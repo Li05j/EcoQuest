@@ -1,0 +1,22 @@
+/* Navbar.css */
+.navbar {
+    width: 20%;
+    height: 100vh;
+    overflow-y: auto;
+    /* Make it scrollable */
+    border-right: 1px solid #b0f595;
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar button {
+    width: 100%;
+    padding: 10px;
+    border-color: aliceblue;
+    background-color: #b0f595;
+    cursor: pointer;
+}
+
+.navbar button:hover {
+    background-color: #acf3de;
+}
