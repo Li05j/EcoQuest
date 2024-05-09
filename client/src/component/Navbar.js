@@ -5,8 +5,8 @@ import './Navbar.css';
 const Navbar = ({ setActivePage }) => {
     return (
         <div className="navbar">
-            <button onClick={() => setActivePage('electricity')}>Electricity</button>
-            <button onClick={() => setActivePage('flight')}>Flight</button>
+            <button onClick={() => setActivePage('electricity')}>Electricity Form</button>
+            <button onClick={() => setActivePage('shipping')}>Shipping Form</button>
         </div>
     );
 };

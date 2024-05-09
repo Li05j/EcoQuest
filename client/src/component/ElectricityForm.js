@@ -1,5 +1,5 @@
 // ElectricityForm.js
-import React, { useState } from 'react';
+import React from 'react';
 
 const ElectricityForm = ({ data, updateData, setActivePage }) => {
 
@@ -10,7 +10,7 @@ const ElectricityForm = ({ data, updateData, setActivePage }) => {
     // };
 
     const handleNextForm = () => {
-        setActivePage('flight'); // Assuming 'flight' is the next form
+        setActivePage('shipping'); // next form
     };
 
     const handleValueChange = (e) => {

@@ -34,8 +34,8 @@ def estimate_electricity():
     )
     return jsonify(response.json())
 
-@app.route('/estimate/flight', methods=['POST'])
-def estimate_flight():
+@app.route('/estimate/shipping', methods=['POST'])
+def estimate_shipping():
     data = request.json
     response = requests.post(
         "https://www.carboninterface.com/api/v1/estimates",
@@ -44,9 +44,12 @@ def estimate_flight():
             'Content-Type': 'application/json',
         },
         json={
-            "type": "flight",
-            "passengers": data.get("passengers"),
-            "legs": data.get("legs"),
+            "type": "shipping",
+            "weight_value": data.get("weight_value"),
+            "weight_unit": data.get("weight_unit"),
+            "distance_value": data.get("distance_value"),
+            "distance_unit": data.get("distance_unit"),
+            "transport_method": data.get("transport_method"),
         }
     )
     return jsonify(response.json())

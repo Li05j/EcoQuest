@@ -2,13 +2,13 @@
 import React, { useState } from 'react';
 import Navbar from './component/Navbar';
 import ElectricityForm from './component/ElectricityForm';
-import FlightForm from './component/FlightForm';
+import ShippingForm from './component/ShippingForm';
 
 const App = () => {
   const [activePage, setActivePage] = useState('');
   const [formData, setFormData] = useState({
     electricity: { electricity_value: '', country: '' },
-    flight: { /* ... */ },
+    shipping: { weight_value: '', weight_unit: '', distance_value: '', distance_unit: '', transport_method: '' },
   });
 
   const renderContent = () => {
@@ -18,8 +18,11 @@ const App = () => {
           data={formData.electricity}
           updateData={(newData) => setFormData({ ...formData, electricity: newData })}
           setActivePage={setActivePage} />;
-      case 'flight':
-        return <FlightForm />;
+      case 'shipping':
+        return <ShippingForm
+          data={formData.shipping}
+          updateData={(newData) => setFormData({ ...formData, shipping: newData })}
+          setActivePage={setActivePage} />;
       default:
         return <div>Select an option</div>;
     }
