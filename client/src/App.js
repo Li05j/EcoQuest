@@ -6,11 +6,18 @@ import FlightForm from './component/FlightForm';
 
 const App = () => {
   const [activePage, setActivePage] = useState('');
+  const [formData, setFormData] = useState({
+    electricity: { electricity_value: '', country: '' },
+    flight: { /* ... */ },
+  });
 
   const renderContent = () => {
     switch (activePage) {
       case 'electricity':
-        return <ElectricityForm />;
+        return <ElectricityForm
+          data={formData.electricity}
+          updateData={(newData) => setFormData({ ...formData, electricity: newData })}
+          setActivePage={setActivePage} />;
       case 'flight':
         return <FlightForm />;
       default:
