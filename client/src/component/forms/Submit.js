@@ -1,5 +1,6 @@
 // SubmitForm.js
 import React from 'react';
+import { sendDataToChatGPT } from '../../service/ChatService';
 
 const SubmitForm = ({ data }) => {
     const DEFAULT_VEHICLE_MODEL_ID = "7268a9b7-17e8-4c8d-acca-57059252afe9"
@@ -33,66 +34,53 @@ const SubmitForm = ({ data }) => {
             transport_method: data.shipping.transport_method,
         };
 
-        // for debug
-        // console.log('Data:', data);
-        // console.log('Payload:', payload_fuel);
-        //
-
-        fetch('http://localhost:5000/estimate/electricity', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload_electricity),
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
+        Promise.all([
+            fetch('http://localhost:5000/estimate/electricity', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload_electricity),
+            }),
+            fetch('http://localhost:5000/estimate/vehicle', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload_vehicle),
+            }),
+            fetch('http://localhost:5000/estimate/fuel', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload_fuel),
+            }),
+            fetch('http://localhost:5000/estimate/shipping', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload_shipping),
             })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+        ])
+            .then(responses => Promise.all(responses.map(res => res.json())))
+            .then(([electricityResponse, vehicleResponse, fuelResponse, shippingResponse]) => {
+                const totalCarbonKg =
+                    electricityResponse.data.attributes.carbon_kg +
+                    vehicleResponse.data.attributes.carbon_kg +
+                    fuelResponse.data.attributes.carbon_kg +
+                    shippingResponse.data.attributes.carbon_kg;
+                const totalCarbonLb =
+                    electricityResponse.data.attributes.carbon_lb +
+                    vehicleResponse.data.attributes.carbon_lb +
+                    fuelResponse.data.attributes.carbon_lb +
+                    shippingResponse.data.attributes.carbon_lb;
 
-        fetch('http://localhost:5000/estimate/vehicle', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload_vehicle),
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-
-        fetch('http://localhost:5000/estimate/fuel', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload_fuel),
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-
-        fetch('http://localhost:5000/estimate/shipping', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload_shipping),
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
+                sendDataToChatGPT(
+                    [totalCarbonKg, totalCarbonLb],
+                    [payload_electricity, payload_vehicle, payload_fuel, payload_shipping]
+                )
             })
             .catch((error) => {
                 console.error('Error:', error);
