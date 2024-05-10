@@ -2,14 +2,9 @@
 import React from 'react';
 
 const ShippingForm = ({ data, updateData, setActivePage }) => {
-    // const handleSubmit = (event) => {
-    //     event.preventDefault();
-    //     // send data to your server
-    //     console.log({ electricityValue, country });
-    // };
 
     const handleNextForm = () => {
-        setActivePage('electricity');
+        setActivePage('submit');
     };
 
     const handleWeightValueChange = (e) => {

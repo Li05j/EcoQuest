@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Navbar from './component/Navbar';
 import ElectricityForm from './component/ElectricityForm';
 import ShippingForm from './component/ShippingForm';
+import SubmitForm from './component/Submit';
 
 const App = () => {
   const [activePage, setActivePage] = useState('');
@@ -23,6 +24,8 @@ const App = () => {
           data={formData.shipping}
           updateData={(newData) => setFormData({ ...formData, shipping: newData })}
           setActivePage={setActivePage} />;
+      case 'submit':
+        return <SubmitForm data={formData} />;
       default:
         return <div>Select an option</div>;
     }

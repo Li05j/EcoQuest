@@ -1,7 +1,9 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import requests
 
 app = Flask(__name__)
+CORS(app)
 
 # This is a test API KEY with limited usage.
 API_KEY = 'IBfGoXLBVKXsM10L0SSA'
@@ -26,10 +28,10 @@ def estimate_electricity():
         },
         json={
             "type": "electricity",
-            "electricity_unit": data.get("electricity_unit"),
+            # "electricity_unit": data.get("electricity_unit"),
             "electricity_value": data.get("electricity_value"),
             "country": data.get("country"),
-            "state": data.get("state")
+            # "state": data.get("state")
         }
     )
     return jsonify(response.json())

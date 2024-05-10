@@ -7,6 +7,7 @@ const Navbar = ({ setActivePage }) => {
         <div className="navbar">
             <button onClick={() => setActivePage('electricity')}>Electricity Form</button>
             <button onClick={() => setActivePage('shipping')}>Shipping Form</button>
+            <button onClick={() => setActivePage('submit')}>Submit Form</button>
         </div>
     );
 };

@@ -3,12 +3,6 @@ import React from 'react';
 
 const ElectricityForm = ({ data, updateData, setActivePage }) => {
 
-    // const handleSubmit = (event) => {
-    //     event.preventDefault();
-    //     // send data to your server
-    //     console.log({ electricityValue, country });
-    // };
-
     const handleNextForm = () => {
         setActivePage('shipping'); // next form
     };
@@ -43,7 +37,6 @@ const ElectricityForm = ({ data, updateData, setActivePage }) => {
                     </select>
                 </label>
             </div>
-            {/* <button type="submit">Submit</button> */}
             <button type="button" onClick={handleNextForm}>Next Form</button>
         </form>
     );
