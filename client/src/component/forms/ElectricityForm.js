@@ -4,7 +4,7 @@ import React from 'react';
 const ElectricityForm = ({ data, updateData, setActivePage }) => {
 
     const handleNextForm = () => {
-        setActivePage('shipping'); // next form
+        setActivePage('vehicle'); // next form
     };
 
     const handleValueChange = (e) => {
@@ -34,6 +34,7 @@ const ElectricityForm = ({ data, updateData, setActivePage }) => {
                         <option value="">Select a country</option>
                         <option value="US">United States</option>
                         <option value="CA">Canada</option>
+                        {/* and more */}
                     </select>
                 </label>
             </div>

@@ -38,6 +38,7 @@ const ShippingForm = ({ data, updateData, setActivePage }) => {
                         onChange={handleWeightValueChange}
                     />
                     <select value={data.weight_unit} onChange={handleWeightUnitChange}>
+                        <option value="">Select a Unit</option>
                         <option value="kg">kg</option>
                         <option value="lb">lb</option>
                     </select>
@@ -52,6 +53,7 @@ const ShippingForm = ({ data, updateData, setActivePage }) => {
                         onChange={handleDistanceValueChange}
                     />
                     <select value={data.distance_unit} onChange={handleDistanceUnitChange}>
+                        <option value="">Select a Unit</option>
                         <option value="km">km</option>
                         <option value="mi">mi</option>
                     </select>
@@ -61,6 +63,7 @@ const ShippingForm = ({ data, updateData, setActivePage }) => {
                 <label>
                     Transport Method:
                     <select value={data.transport_method} onChange={handleTransportMethodChange}>
+                        <option value="">Select a Transportation</option>
                         <option value="ship">Ship</option>
                         <option value="train">Train</option>
                         <option value="truck">Truck</option>

@@ -28,10 +28,44 @@ def estimate_electricity():
         },
         json={
             "type": "electricity",
-            # "electricity_unit": data.get("electricity_unit"),
             "electricity_value": data.get("electricity_value"),
             "country": data.get("country"),
-            # "state": data.get("state")
+        }
+    )
+    return jsonify(response.json())
+
+@app.route('/estimate/vehicle', methods=['POST'])
+def estimate_vehicle():
+    data = request.json
+    response = requests.post(
+        "https://www.carboninterface.com/api/v1/estimates",
+        headers = {
+            'Authorization': f'Bearer {API_KEY}',
+            'Content-Type': 'application/json',
+        },
+        json={
+            "type": "vehicle",
+            "distance_unit": data.get("distance_unit"),
+            "distance_value": data.get("distance_value"),
+            "vehicle_model_id": data.get("vehicle_model_id"),
+        }
+    )
+    return jsonify(response.json())
+
+@app.route('/estimate/fuel', methods=['POST'])
+def estimate_fuel():
+    data = request.json
+    response = requests.post(
+        "https://www.carboninterface.com/api/v1/estimates",
+        headers = {
+            'Authorization': f'Bearer {API_KEY}',
+            'Content-Type': 'application/json',
+        },
+        json={
+            "type": "fuel_combustion",
+            "fuel_source_type": data.get("fuel_source_type"),
+            "fuel_source_unit": data.get("fuel_source_unit"),
+            "fuel_source_value": data.get("fuel_source_value"),
         }
     )
     return jsonify(response.json())
