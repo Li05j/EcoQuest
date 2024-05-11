@@ -5,6 +5,8 @@ import './Navbar.css';
 const Navbar = ({ setActivePage }) => {
     return (
         <div className="navbar">
+            <button onClick={() => setActivePage('welcome')}>Welcome!</button>
+            <button onClick={() => setActivePage('general')}>General Info Form</button>
             <button onClick={() => setActivePage('electricity')}>Electricity Form</button>
             <button onClick={() => setActivePage('vehicle')}>Vehicle Form</button>
             <button onClick={() => setActivePage('fuel')}>Fuel Combustion Form</button>

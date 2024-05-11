@@ -1,23 +1,27 @@
 // ChatService.js
 export const sendDataToChatGPT = async (carbonData, formData) => {
-    // const data = {
-    //     carbonFootprint: carbonData,
-    //     userInput: formData,
-    // };
+    const carbonKg = carbonData[0]
+    const carbonLb = carbonData[1]
+
+    const generalData = formData.general
+    const electricityData = formData.electricity
+    const vehicleData = formData.vehicle
+    const fuelData = formData.fuel
+    const shippingData = formData.shipping
 
     const model = "gpt-3.5-turbo"
     const messages = [
         {
             "role": "system",
-            "content": "Your task is to follow what user is saying."
+            "content": "You will receive an individual/household's carbon footprint below. Your task is to provide both general and personalized suggestions on how they can reduce their carbon footprint based on their lifestyle. Avoid generic advice and offer specific examples (by referencing their country, household size, and other entries in your reply) to make an impact. Your target are NOT corporations, but individuals/households who might forget to turn off lights before leaving their home, not knowing what and what aren't recyclable. etc. Keep your response concise (under 300 tokens).\nStart your response by restating: **Your Carbon Footprint is: [their carbon footprint in both kg and lb]**."
         },
         {
             "role": "user",
-            "content": `Say Hi~! Also, repeat this number if you see one. ${carbonData[0]}`
+            "content": `Timeframe: ${generalData.timeframe}\nHousehold: ${generalData.household}\nCountry: ${generalData.country}\nCarbon Footprint (kg/lb): ${carbonKg}/${carbonLb}\nElectricty Usage: ${electricityData.electricity_value}\nVehicle Driven: ${vehicleData.distance_value} ${vehicleData.distance_unit}\nFuel Combustion: ${fuelData.fuel_source_value} ${fuelData.fuel_source_unit} of type ${fuelData.fuel_source_type}\nShipping: ${shippingData.weight_value} ${shippingData.weight_unit} shipped ${shippingData.distance_value} ${shippingData.distance_unit} via ${shippingData.transport_method}`
         }
     ];
-    const temperature = 0.7
-    const max_tokens = 128
+    const temperature = 1.2
+    const max_tokens = 300
     const top_p = 1
 
     const payload = {

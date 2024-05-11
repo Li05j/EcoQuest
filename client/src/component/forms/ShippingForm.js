@@ -31,7 +31,7 @@ const ShippingForm = ({ data, updateData, setActivePage }) => {
         <form>
             <div>
                 <label>
-                    Weight Value:
+                    Enter the total weight being shipped:
                     <input
                         type="number"
                         value={data.weight_value}
@@ -46,7 +46,7 @@ const ShippingForm = ({ data, updateData, setActivePage }) => {
             </div>
             <div>
                 <label>
-                    Distance Value:
+                    Enter the total distance shipped:
                     <input
                         type="number"
                         value={data.distance_value}
@@ -61,7 +61,7 @@ const ShippingForm = ({ data, updateData, setActivePage }) => {
             </div>
             <div>
                 <label>
-                    Transport Method:
+                    Choose the main transportation method for shipping:
                     <select value={data.transport_method} onChange={handleTransportMethodChange}>
                         <option value="">Select a Transportation</option>
                         <option value="ship">Ship</option>

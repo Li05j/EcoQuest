@@ -19,7 +19,7 @@ const FuelCombustionForm = ({ data, updateData, setActivePage }) => {
         <form>
             <div>
                 <label>
-                    Fuel Source Type:
+                    Choose your fuel source type:
                     <select value={data.fuel_source_type} onChange={handleTypeChange}>
                         <option value="">Select a Fuel Type</option>
                         <option value="bit">Bituminous Coal</option>
@@ -31,7 +31,7 @@ const FuelCombustionForm = ({ data, updateData, setActivePage }) => {
             </div>
             <div>
                 <label>
-                    Fuel Source Value (btu):
+                    Enter your fuel combustion amount in btu:
                     <input
                         type="number"
                         value={data.fuel_source_value}

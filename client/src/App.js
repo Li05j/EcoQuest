@@ -1,6 +1,8 @@
 // App.js
 import React, { useState } from 'react';
 import Navbar from './component/Navbar';
+import WelcomePage from './component/forms/WelcomePage';
+import GeneralInfoForm from './component/forms/GeneralInfoForm';
 import ElectricityForm from './component/forms/ElectricityForm';
 import VehicleForm from './component/forms/VehicleForm';
 import FuelCombustionForm from './component/forms/FuelCombustionForm';
@@ -10,7 +12,8 @@ import SubmitForm from './component/forms/Submit';
 const App = () => {
   const [activePage, setActivePage] = useState('');
   const [formData, setFormData] = useState({
-    electricity: { electricity_value: '', country: '' },
+    general: { timeframe: '', household: '', country: '' },
+    electricity: { electricity_value: '' },
     vehicle: { distance_unit: '', distance_value: '' },
     fuel: { fuel_source_type: '', fuel_source_value: '' },
     shipping: { weight_value: '', weight_unit: '', distance_value: '', distance_unit: '', transport_method: '' },
@@ -18,6 +21,11 @@ const App = () => {
 
   const renderContent = () => {
     switch (activePage) {
+      case 'general':
+        return <GeneralInfoForm
+          data={formData.general}
+          updateData={(newData) => setFormData({ ...formData, general: newData })}
+          setActivePage={setActivePage} />;
       case 'electricity':
         return <ElectricityForm
           data={formData.electricity}
@@ -41,7 +49,7 @@ const App = () => {
       case 'submit':
         return <SubmitForm data={formData} />;
       default:
-        return <div>Select an option</div>;
+        return <WelcomePage setActivePage={setActivePage} />;
     }
   };
 

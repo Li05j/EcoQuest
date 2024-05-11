@@ -19,7 +19,7 @@ const VehicleForm = ({ data, updateData, setActivePage }) => {
         <form>
             <div>
                 <label>
-                    Distance Value:
+                    Distance traveled via your vehicle:
                     <input
                         type="number"
                         value={data.distance_value}
