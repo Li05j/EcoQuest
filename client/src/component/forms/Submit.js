@@ -1,19 +1,25 @@
 // SubmitForm.js
-import React from 'react';
+import React, { useState } from 'react';
 import { sendDataToChatGPT } from '../../service/ChatService';
 
 const SubmitForm = ({ data }) => {
     const DEFAULT_VEHICLE_MODEL_ID = "7268a9b7-17e8-4c8d-acca-57059252afe9"
     const DEFAULT_FUEL_SOURCE_UNIT = "btu"
 
+    const [totalCarbonKg, setTotalCarbonKg] = useState(null);
+    const [totalCarbonLb, setTotalCarbonLb] = useState(null);
+    const [chatGptResponse, setChatGptResponse] = useState(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitFlag, setsubmitFlag] = useState(false);
+
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        // const payload_general = {
-        //     timeframe: data.general.timeframe,
-        //     household: data.general.household,
-        //     country: data.general.country,
-        // };
+        setTotalCarbonKg(null);
+        setTotalCarbonLb(null);
+        setChatGptResponse(null);
+        setIsSubmitting(true);
+        setsubmitFlag(true);
 
         const payload_electricity = {
             electricity_value: data.electricity.electricity_value,
@@ -40,31 +46,6 @@ const SubmitForm = ({ data }) => {
             transport_method: data.shipping.transport_method,
         };
 
-        // test version
-        // Promise.all([
-        //     fetch('http://localhost:5000/estimate/electricity', {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //         },
-        //         body: JSON.stringify(payload_electricity),
-        //     }),
-        // ])
-        //     .then(responses => Promise.all(responses.map(res => res.json())))
-        //     .then((electricityResponse) => {
-        //         console.log(electricityResponse[0].data)
-        //         const totalCarbonKg =
-        //             electricityResponse[0].data.attributes.carbon_kg;
-        //         const totalCarbonLb =
-        //             electricityResponse[0].data.attributes.carbon_lb;
-
-        //         sendDataToChatGPT([totalCarbonKg, totalCarbonLb], data)
-        //     })
-        //     .catch((error) => {
-        //         console.error('Error:', error);
-        //     });
-
-        //////////////////////////////////////////////////////////////////////////////
         Promise.all([
             fetch('http://localhost:5000/estimate/electricity', {
                 method: 'POST',
@@ -96,22 +77,26 @@ const SubmitForm = ({ data }) => {
             })
         ])
             .then(responses => Promise.all(responses.map(res => res.json())))
-            .then(([electricityResponse, vehicleResponse, fuelResponse, shippingResponse]) => {
-                const totalCarbonKg =
+            .then(async ([electricityResponse, vehicleResponse, fuelResponse, shippingResponse]) => {
+                setTotalCarbonKg(
                     electricityResponse.data.attributes.carbon_kg +
                     vehicleResponse.data.attributes.carbon_kg +
                     fuelResponse.data.attributes.carbon_kg +
-                    shippingResponse.data.attributes.carbon_kg;
-                const totalCarbonLb =
+                    shippingResponse.data.attributes.carbon_kg
+                )
+                setTotalCarbonLb(
                     electricityResponse.data.attributes.carbon_lb +
                     vehicleResponse.data.attributes.carbon_lb +
                     fuelResponse.data.attributes.carbon_lb +
-                    shippingResponse.data.attributes.carbon_lb;
-
-                sendDataToChatGPT([totalCarbonKg, totalCarbonLb], data)
+                    shippingResponse.data.attributes.carbon_lb
+                )
+                const openai_reply = await sendDataToChatGPT([totalCarbonKg, totalCarbonLb], data)
+                setChatGptResponse(openai_reply)
+                setIsSubmitting(false);
             })
             .catch((error) => {
                 console.error('Error:', error);
+                setIsSubmitting(false);
             });
     };
 
@@ -119,7 +104,13 @@ const SubmitForm = ({ data }) => {
         <div>
             <p>Are you sure you want to submit?</p>
             <p>You can go back and double check your responses by selecting the forms on the left.</p>
-            <button type="submit" onClick={handleSubmit}>Submit</button>
+            <button type="submit" onClick={handleSubmit} disabled={isSubmitting}>Submit</button>
+            <br></br><br></br>
+            <pre>{submitFlag && <p>Your total carbon footprint is:
+                {totalCarbonKg !== null && totalCarbonLb !== null ? ` ${totalCarbonKg} kg / ${totalCarbonLb} lb` : ' calculating...'}</p>}
+                {submitFlag && <p>We suggest...:
+                    {chatGptResponse !== null ? ` ${chatGptResponse}` : ' analysing your submission...'}</p>}
+            </pre>
         </div>
     );
 };

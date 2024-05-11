@@ -13,7 +13,7 @@ export const sendDataToChatGPT = async (carbonData, formData) => {
     const messages = [
         {
             "role": "system",
-            "content": "You will receive an individual/household's carbon footprint below. Your task is to provide both general and personalized suggestions on how they can reduce their carbon footprint based on their lifestyle. Avoid generic advice and offer specific examples (by referencing their country, household size, and other entries in your reply) to make an impact. Your target are NOT corporations, but individuals/households who might forget to turn off lights before leaving their home, not knowing what and what aren't recyclable. etc. Keep your response concise (under 300 tokens).\nStart your response by restating: **Your Carbon Footprint is: [their carbon footprint in both kg and lb]**."
+            "content": "You will receive an individual/household's carbon footprint below. Your task is to provide both general and personalized suggestions on how they can reduce their carbon footprint based on their lifestyle. Avoid generic advice and offer specific examples (by referencing their country, household size, and other entries in your reply) to make an impact. Your target are NOT corporations, but individuals/households who might forget to turn off lights before leaving their home, not knowing what and what aren't recyclable. etc. Keep your response concise (under 300 tokens)."
         },
         {
             "role": "user",
@@ -49,7 +49,7 @@ export const sendDataToChatGPT = async (carbonData, formData) => {
 
         const data = await response.text();
         console.log('openai response: ', data)
-        return data; // Process this as needed
+        return data;
     } catch (error) {
         console.error('Error sending data to OpenAI:', error);
     }
