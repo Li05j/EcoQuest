@@ -34,57 +34,89 @@ const SubmitForm = ({ data }) => {
             transport_method: data.shipping.transport_method,
         };
 
-        Promise.all([
-            fetch('http://localhost:5000/estimate/electricity', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload_electricity),
-            }),
-            fetch('http://localhost:5000/estimate/vehicle', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload_vehicle),
-            }),
-            fetch('http://localhost:5000/estimate/fuel', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload_fuel),
-            }),
-            fetch('http://localhost:5000/estimate/shipping', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload_shipping),
-            })
-        ])
-            .then(responses => Promise.all(responses.map(res => res.json())))
-            .then(([electricityResponse, vehicleResponse, fuelResponse, shippingResponse]) => {
-                const totalCarbonKg =
-                    electricityResponse.data.attributes.carbon_kg +
-                    vehicleResponse.data.attributes.carbon_kg +
-                    fuelResponse.data.attributes.carbon_kg +
-                    shippingResponse.data.attributes.carbon_kg;
-                const totalCarbonLb =
-                    electricityResponse.data.attributes.carbon_lb +
-                    vehicleResponse.data.attributes.carbon_lb +
-                    fuelResponse.data.attributes.carbon_lb +
-                    shippingResponse.data.attributes.carbon_lb;
+        sendDataToChatGPT(
+            [100, 220.462],
+            [payload_electricity, payload_vehicle, payload_fuel, payload_shipping]
+        )
 
-                sendDataToChatGPT(
-                    [totalCarbonKg, totalCarbonLb],
-                    [payload_electricity, payload_vehicle, payload_fuel, payload_shipping]
-                )
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+        // test version
+        // Promise.all([
+        //     fetch('http://localhost:5000/estimate/electricity', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify(payload_electricity),
+        //     }),
+        // ])
+        //     .then(responses => Promise.all(responses.map(res => res.json())))
+        //     .then((electricityResponse) => {
+        //         const totalCarbonKg =
+        //             electricityResponse.data.attributes.carbon_kg;
+        //         const totalCarbonLb =
+        //             electricityResponse.data.attributes.carbon_lb;
+
+        //         sendDataToChatGPT(
+        //             [totalCarbonKg, totalCarbonLb],
+        //             [payload_electricity, payload_vehicle, payload_fuel, payload_shipping]
+        //         )
+        //     })
+        //     .catch((error) => {
+        //         console.error('Error:', error);
+        //     });
+
+        //////////////////////////////////////////////////////////////////////////////
+        // Promise.all([
+        //     fetch('http://localhost:5000/estimate/electricity', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify(payload_electricity),
+        //     }),
+        //     fetch('http://localhost:5000/estimate/vehicle', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify(payload_vehicle),
+        //     }),
+        //     fetch('http://localhost:5000/estimate/fuel', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify(payload_fuel),
+        //     }),
+        //     fetch('http://localhost:5000/estimate/shipping', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify(payload_shipping),
+        //     })
+        // ])
+        //     .then(responses => Promise.all(responses.map(res => res.json())))
+        //     .then(([electricityResponse, vehicleResponse, fuelResponse, shippingResponse]) => {
+        //         const totalCarbonKg =
+        //             electricityResponse.data.attributes.carbon_kg +
+        //             vehicleResponse.data.attributes.carbon_kg +
+        //             fuelResponse.data.attributes.carbon_kg +
+        //             shippingResponse.data.attributes.carbon_kg;
+        //         const totalCarbonLb =
+        //             electricityResponse.data.attributes.carbon_lb +
+        //             vehicleResponse.data.attributes.carbon_lb +
+        //             fuelResponse.data.attributes.carbon_lb +
+        //             shippingResponse.data.attributes.carbon_lb;
+
+        //         sendDataToChatGPT(
+        //             [totalCarbonKg, totalCarbonLb],
+        //             [payload_electricity, payload_vehicle, payload_fuel, payload_shipping]
+        //         )
+        //     })
+        //     .catch((error) => {
+        //         console.error('Error:', error);
+        //     });
     };
 
     return (

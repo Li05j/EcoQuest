@@ -1,16 +1,40 @@
+import os
+from openai import OpenAI
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import requests
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
 
+client = OpenAI(
+    api_key=os.environ.get('OPENAI_API_KEY')
+)
+
+@app.route('/generate-response', methods=['POST'])
+def generate_response():
+    data = request.json
+    try:
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=data['messages'],
+            temperature=data.get('temperature'),
+            max_tokens=data.get('max_tokens'),
+            top_p=data.get('top_p')
+        )
+        return response.choices[0].message.content, 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 # This is a test API KEY with limited usage.
-API_KEY = 'IBfGoXLBVKXsM10L0SSA'
+CARBON_API_KEY = os.environ.get('CARBON_API_KEY')
 
 @app.route('/auth')
 def auth_test():
-    api_key = API_KEY
+    api_key = CARBON_API_KEY
     headers = {
         'Authorization': f'Bearer {api_key}',
     }
@@ -23,7 +47,7 @@ def estimate_electricity():
     response = requests.post(
         "https://www.carboninterface.com/api/v1/estimates",
         headers = {
-            'Authorization': f'Bearer {API_KEY}',
+            'Authorization': f'Bearer {CARBON_API_KEY}',
             'Content-Type': 'application/json',
         },
         json={
@@ -40,7 +64,7 @@ def estimate_vehicle():
     response = requests.post(
         "https://www.carboninterface.com/api/v1/estimates",
         headers = {
-            'Authorization': f'Bearer {API_KEY}',
+            'Authorization': f'Bearer {CARBON_API_KEY}',
             'Content-Type': 'application/json',
         },
         json={
@@ -58,7 +82,7 @@ def estimate_fuel():
     response = requests.post(
         "https://www.carboninterface.com/api/v1/estimates",
         headers = {
-            'Authorization': f'Bearer {API_KEY}',
+            'Authorization': f'Bearer {CARBON_API_KEY}',
             'Content-Type': 'application/json',
         },
         json={
@@ -76,7 +100,7 @@ def estimate_shipping():
     response = requests.post(
         "https://www.carboninterface.com/api/v1/estimates",
         headers = {
-            'Authorization': f'Bearer {API_KEY}',
+            'Authorization': f'Bearer {CARBON_API_KEY}',
             'Content-Type': 'application/json',
         },
         json={
