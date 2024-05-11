@@ -1,6 +1,4 @@
-# Project Title
-EcoQuest: Journey to Greener Living
-
+# EcoQuest:  Journey to Greener Living
 
 ## Description
 This is a Carbon Footprint Calculator (with personalized suggestions to reduce it!).
@@ -47,6 +45,6 @@ npm start
 Fill in the necessary blanks to obtain YOUR carbon footprint and a personalized feedback and evaluation!
 
 ## Environment Variables
-Obtain 2 API keys:
-https://www.carboninterface.com/account/api_credentials
-https://platform.openai.com/api-keys
+- Obtain 2 API keys:
+- https://www.carboninterface.com/account/api_credentials
+- https://platform.openai.com/api-keys
