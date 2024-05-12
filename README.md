@@ -1,4 +1,4 @@
-# EcoQuest:  Journey to Greener Living
+# GreenQuest:  Journey to Greener Living
 
 ## Description
 This is a Carbon Footprint Calculator (with personalized suggestions to reduce it!).
